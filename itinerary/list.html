@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>RouteNote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Firebase 9 compat版 --><!-- Firebase 9 compat版 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- js 読み込み -->
+    <script src="js/account/account.js" defer></script>
+    <script src="js/account/profile.js" defer></script>
+    <script src="js/account/signup.js" defer></script>
+    <script src="js/account/login.js" defer></script>
+</head>
+<body>
+    <main>
+        <header>
+            <nav class="header-nav">
+                <h1 class="site-title"><a href="/index.html">RouteNote</a></h1>
+                <ul class="nav-links">
+                <li><a href="/index.html">ホーム</a></li>
+                <li><a href="/itinerary/itinerary.html">旅程管理</a></li>
+                <li>
+                    <a href="/account/account.html">アカウント</a>
+                    <span id="accountIconWrapper">
+                    <a href="/account/profile.html" id="accountIconLink">
+                        <img src="/icon/guest.png" alt="アカウントアイコン" id="accountIcon" />
+                    </a>
+                    </span>
+                </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>旅程制作</h1>
+
+        <h2>ルート入力</h2>
+        <div class="form-section">
+            <label>ルート名</label>
+            <input type="text" class="must" id="routeName" placeholder="鉄道日本一周旅">
+            
+            <label>日程</label>
+            <input type="date" class="must" id="routeDate" placeholder="2000/01/01">
+        </div>
+        <button onclick="addRoute()">ルートを追加</button>
+
+        <h2>区間入力</h2>
+        <div class="form-section">
+            <label>会社名</label>
+            <input type="text" id="company" placeholder="JR東日本">
+
+            <label>路線名</label>
+            <input type="text" class="must" id="line" placeholder="東海道線">
+
+            <label>種別</label>
+            <input type="text" class="must" id="type" placeholder="特急">
+
+            <label>列車名称</label>
+            <input type="text" id="trainName" placeholder="踊り子1号">
+
+            <label>号車</label>
+            <input type="number" id="car" placeholder="4">
+
+            <label>座席</label>
+            <input type="text" id="seat" placeholder="1A">
+
+            <label>始発駅</label>
+            <input type="text" id="start" placeholder="東京">
+
+            <label>終着駅</label>
+            <input type="text" class="must" id="destination" placeholder="伊豆急下田">
+
+            <label>乗車駅</label>
+            <input type="text" class="must" id="depStation" placeholder="品川">
+
+            <label>出発時間</label>
+            <input type="time" class="must" id="depTime" placeholder="09:18">
+
+            <label>出発番線</label>
+            <input type="number" id="depPlatform" placeholder="12">
+
+            <label>降車駅</label>
+            <input type="text" class="must" id="arrStation" placeholder="熱海">
+
+            <label>到着時間</label>
+            <input type="time" class="must" id="arrTime" placeholder="10:20">
+
+            <label>到着番線</label>
+            <input type="number" id="arrPlatform" placeholder="2">
+
+            <label>乗車券料金</label>
+            <input type="text" id="ticketPrice" placeholder="1980">
+
+            <label>特別料金</label>
+            <input type="text" id="limitedPrice" placeholder="1580">
+        </div>
+        <button onclick="addSection()">区間を追加</button>
+
+
+        <h2>出力</h2>
+        <textarea id="output" readonly></textarea>
+
+
+        <h2>メニュー</h2>
+        <button onclick="output()">出力</button>
+        <button onclick="importJSON()">JSONを読込</button>
+        <button onclick="exportJSON()">JSONを出力</button>
+
+
+        <!--
+        <h2>🔧 ルート＆区間入力</h2>
+        <div class="form-section">
+            <label>ルート名</label><input type="text" id="rouateName">
+            <label>区間種別</label>
+            <select id="routeType">
+                <option>往路</option>
+                <option>復路</option>
+            </select>
+            <label>会社名</label><input type="text" id="company">
+            <label>路線</label><input type="text" id="line">
+            <label>種別</label><input type="text" id="type">
+            <label>行き先</label><input type="text" id="destination">
+            <label>行先会社</label><input type="text" id="destCompany">
+            <label>始発駅</label><input type="text" id="startStation">
+            <label>始発会社</label><input type="text" id="startCompany">
+            <label>出発駅</label><input type="text" id="depStation">
+            <label>出発会社</label><input type="text" id="depCompany">
+            <label>出発時間</label><input type="time" id="depTime">
+            <label>出発番線</label><input type="number" id="depPlatform">
+            <label>到着駅</label><input type="text" id="arrStation">
+            <label>到着会社</label><input type="text" id="arrCompany">
+            <label>到着時間</label><input type="time" id="arrTime">
+            <label>到着番線</label><input type="number" id="arrPlatform">
+        </div>
+        <button onclick="addSection()">通常区間追加</button>
+
+        <div class="form-section">
+            <label>特急名称</label><input type="text" id="expressName">
+            <label>区間</label><input type="text" id="expressSection">
+            <label>時間</label><input type="text" id="expressTime">
+            <label>料金(自由席)</label><input type="text" id="expressPrice">
+            <label>乗車券</label><input type="text" id="ticketPrice">
+            <label>自由席券</label><input type="text" id="expressFree">
+            <label>指定席券</label><input type="text" id="expressReserved">
+        </div>
+        <button onclick="addExpress()">特急追加</button>
+
+        <h2>現在の旅程</h2>
+        <div id="List"></div>
+
+        <h2>🛠 操作</h2>
+        <button onclick="generateOutput()">出力</button>
+        <button onclick="printItinerary()">印刷</button>
+        <button onclick="exportCSV()">CSVをDL</button>
+        <button onclick="exportJSON()">JSONをDL</button>
+        <button onclick="toggleEditMode()" id="editToggle">編集可</button>
+        <button class="btn-secondary" onclick="importJSON()">JSON読込</button>
+        <button class="btn-secondary" onclick="importCSV()">CSV読込</button>
+        <button onclick="saveToLocal()">保存</button>
+        <button class="btn-danger" onclick="clearStorage()">全保存削除</button>
+
+        <h2>📄 出力結果</h2>
+        <textarea id="output" readonly></textarea>
+    -->
+
+            <footer>
+                <p>&copy; 2025 RouteNote All rights reserved.</p>
+            </footer>
+    </main>
+
+    <script>
+        let itinerary = [];
+        let editMode = true;
+        let storageIndex = 0;
+        let storageList = JSON.parse(localStorage.getItem("itineraryList") || "[]");
+
+
+
+
+        // 変数宣言 ルート
+        let routeName = "";
+        let routeDate = "";
+
+
+        // 変数宣言 区間
+        let company = [];
+        let line = [];
+        let type = [];
+        let trainName = [];
+        let car = [];
+        let seat = [];
+        let start = [];
+        let destination = [];
+        let depStation = [];
+        let depTime = [];
+        let depPlatform = [];
+        let arrStation = [];
+        let arrTime = [];
+        let arrPlatform = [];
+        let ticketPrice = [];
+        let limitedPrice = [];
+        let ticket = 0;
+        let limited = 0;
+
+
+        // ルート追加
+        function addRoute() {
+            if (!editMode)
+                return alert("エラー：編集モードを有効にしてください");
+
+            if (
+                document.getElementById("routeName").value === "" ||
+                document.getElementById("routeDate").value === ""
+                )
+                return alert("エラー：必要事項が入力されていません");
+
+            routeName = document.getElementById("routeName").value;
+            routeDate = document.getElementById("routeDate").value;
+
+            document.getElementById("routeName").value = "";
+            document.getElementById("routeDate").value = "";
+        }
+
+
+        // 区間追加
+        function addSection() {
+            if (!editMode)
+                return alert("エラー：編集モードを有効にしてください");
+
+            if (
+                document.getElementById("line").value === "" ||
+                document.getElementById("type").value === "" ||
+                document.getElementById("destination").value === "" ||
+                document.getElementById("depStation").value === "" ||
+                document.getElementById("depTime").value === "" ||
+                document.getElementById("arrStation").value === "" ||
+                document.getElementById("arrTime").value === ""
+                )
+                return alert("エラー：必要事項が入力されていません");
+
+            company.push(document.getElementById("company").value);
+            line.push(document.getElementById("line").value);
+            type.push(document.getElementById("type").value);
+            trainName.push(document.getElementById("trainName").value);
+            car.push(document.getElementById("car").value);
+            seat.push(document.getElementById("seat").value);
+            start.push(document.getElementById("start").value);
+            destination.push(document.getElementById("destination").value);
+            depStation.push(document.getElementById("depStation").value);
+            depTime.push(document.getElementById("depTime").value);
+            depPlatform.push(document.getElementById("depPlatform").value);
+            arrStation.push(document.getElementById("arrStation").value);
+            arrTime.push(document.getElementById("arrTime").value);
+            arrPlatform.push(document.getElementById("arrPlatform").value);
+            ticketPrice.push(document.getElementById("ticketPrice").value);
+            limitedPrice.push(document.getElementById("limitedPrice").value);
+
+            document.getElementById("company").value = "";
+            document.getElementById("line").value = "";
+            document.getElementById("type").value = "";
+            document.getElementById("trainName").value = "";
+            document.getElementById("car").value = "";
+            document.getElementById("seat").value = "";
+            document.getElementById("start").value = "";
+            document.getElementById("destination").value = "";
+            document.getElementById("depStation").value = "";
+            document.getElementById("depTime").value = "";
+            document.getElementById("depPlatform").value = "";
+            document.getElementById("arrStation").value = "";
+            document.getElementById("arrTime").value = "";
+            document.getElementById("arrPlatform").value = "";
+            document.getElementById("ticketPrice").value = "";
+            document.getElementById("limitedPrice").value = "";
+        }
+
+
+        // 出力
+        function output() {
+            const output = document.getElementById("output");
+            let result = "";
+
+            // ルート名と日付の出力
+            result += `# ${routeName}\n`;
+            result += `　${routeDate}\n\n`;
+
+            // 合計料金用の変数（数値型に初期化）
+            let ticket = 0;
+            let limited = 0;
+
+            for (let i = 0; i < line.length; i++) {
+                result += `${depStation[i]}発　${depTime[i]}`;
+                if (depPlatform[i] !== "") {
+                    result += `　${depPlatform[i]}番線`;
+                }
+                result += "\n｜\n｜　";
+
+                if (company[i] !== "") {
+                    result += `${company[i]}　`;
+                }
+                result += `${line[i]}　${type[i]}　`;
+                if (trainName[i] !== "") {
+                    result += `${trainName[i]}　`;
+                }
+                if (start[i] !== "") {
+                    result += `${start[i]}発　`;
+                }
+                result += `${destination[i]}行き　`;
+
+                if (car[i] !== "" || seat[i] !== "") {
+                    result += "\n｜　";
+                    if (car[i] !== "") {
+                        result += `${car[i]}号車　`;
+                    }
+                    if (seat[i] !== "") {
+                        result += `${seat[i]}席　`;
+                    }
+                }
+
+                if (ticketPrice[i] !== "") {
+                    result += `\n｜　乗車券料金：${ticketPrice[i]}`;
+                    ticket += Number(ticketPrice[i]) || 0;
+                }
+                if (limitedPrice[i] !== "") {
+                    result += `\n｜　特別料金　：${limitedPrice[i]}`;
+                    limited += Number(limitedPrice[i]) || 0;
+                }
+
+                result += "\n｜\n";
+
+                result += `${arrStation[i]}着　${arrTime[i]}`;
+                if (arrPlatform[i] !== "") {
+                    result += `　${arrPlatform[i]}番線`;
+                }
+                result += "\n\n";
+            }
+
+            if (ticket !== 0 || limited !== 0) {
+                result += "\n";
+                if (ticket !== 0) {
+                    result += `乗車券料金合計\n　${ticket}\n`;
+                }
+                if (limited !== 0) {
+                    result += `特別料金合計\n　${limited}\n`;
+                }
+            }
+
+            output.value = result;
+        }
+
+
+
+        // JSON入力
+        function importJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json,application/json';
+
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = event => {
+                    try {
+                        const json = JSON.parse(event.target.result);
+
+                        // JSONの中身を適切な変数にセットする例
+                        routeName = json.routeName || "";
+                        routeDate = json.routeDate || "";
+
+                        // 配列は空にしてから読み込み
+                        company.length = 0;
+                        line.length = 0;
+                        type.length = 0;
+                        trainName.length = 0;
+                        car.length = 0;
+                        seat.length = 0;
+                        start.length = 0;
+                        destination.length = 0;
+                        depStation.length = 0;
+                        depTime.length = 0;
+                        depPlatform.length = 0;
+                        arrStation.length = 0;
+                        arrTime.length = 0;
+                        arrPlatform.length = 0;
+                        ticketPrice.length = 0;
+                        limitedPrice.length = 0;
+
+                        if (Array.isArray(json.sections)) {
+                            for (const section of json.sections) {
+                                company.push(section.company || "");
+                                line.push(section.line || "");
+                                type.push(section.type || "");
+                                trainName.push(section.trainName || "");
+                                car.push(section.car || "");
+                                seat.push(section.seat || "");
+                                start.push(section.start || "");
+                                destination.push(section.destination || "");
+                                depStation.push(section.depStation || "");
+                                depTime.push(section.depTime || "");
+                                depPlatform.push(section.depPlatform || "");
+                                arrStation.push(section.arrStation || "");
+                                arrTime.push(section.arrTime || "");
+                                arrPlatform.push(section.arrPlatform || "");
+                                ticketPrice.push(section.ticketPrice || "");
+                                limitedPrice.push(section.limitedPrice || "");
+                            }
+                        }
+
+                        // 読み込み後に画面表示を更新する関数を呼ぶ（あれば）
+                        displaySections();
+
+                    } catch (err) {
+                        alert("JSONファイルの読み込みに失敗しました。\n内容を確認してください。");
+                        console.error(err);
+                    }
+                };
+
+                reader.readAsText(file);
+            };
+
+            input.click();
+        }
+
+
+        // JSON出力
+        function exportJSON() {
+            if (routeName === "" || routeDate === "") {
+                alert("エラー：必要事項が入力されていません");
+                return;
+            }
+
+            // ルート情報と区間情報をまとめてオブジェクト化
+            const data = {
+                routeName: routeName,
+                routeDate: routeDate,
+                sections: []
+            };
+
+            for (let i = 0; i < line.length; i++) {
+                data.sections.push({
+                    company: company[i],
+                    line: line[i],
+                    type: type[i],
+                    trainName: trainName[i],
+                    car: car[i],
+                    seat: seat[i],
+                    start: start[i],
+                    destination: destination[i],
+                    depStation: depStation[i],
+                    depTime: depTime[i],
+                    depPlatform: depPlatform[i],
+                    arrStation: arrStation[i],
+                    arrTime: arrTime[i],
+                    arrPlatform: arrPlatform[i],
+                    ticketPrice: ticketPrice[i],
+                    limitedPrice: limitedPrice[i]
+                });
+            }
+
+            // JSON文字列に変換
+            const jsonStr = JSON.stringify(data, null, 2);
+
+            // ダウンロード用Blobを作成
+            const blob = new Blob([jsonStr], { type: "application/json" });
+
+            // ダウンロードリンクを生成
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+
+            // ファイル名をルート名にする（日本語ファイル名の扱い注意）
+            const fileName = `${routeName || "itinerary"}.json`;
+            a.download = fileName;
+
+            // 自動クリックでダウンロード開始
+            document.body.appendChild(a);
+            a.click();
+
+            // クリック後にリンク削除、URL解放
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+            function renderToTextarea() {
+                const outpaut = document.getElementById("outaput");
+                let result = "";
+
+                for (let i = 0; i < depStation.length; i++) {
+                    if (depStation[i]) {
+                    result += ${depStation[i]}発　${depTime[i]}\n;
+                    }
+
+                    result += "｜\n";
+                    result += ｜　　${line[i]}　${kind[i]}　${dest[i]}行き\n;
+                    result += "｜\n";
+
+                    if (arrStation[i]) {
+                    result += ${arrStation[i]}着　${arrTime[i]}\n;
+                    }
+                }
+
+                output.value = result;
+            }
+
+
+
+
+            let out = ルート:${routeName.value}(${routeType.value})\n;
+            itinerary.forEach(i => {
+                if (i.type === "section") {
+                    out += [通常] ${i.line} ${i.dep}→${i.arr}\n;
+                } else {
+                    out += [特急] ${i.name} ${i.section}\n;
+                }
+            });
+            output.value = out;
+
+
+
+
+
+
+
+        function addSecaaation() {
+            if (!editMode) return alert("編集モードをONにしてください");
+            itinerary.push({
+                type: "section",
+                company: company.value, line: type.value,
+                kind: type.value, destination: destination.value,
+                destCompany: destCompany.value, start: startStation.value,
+                startCompany: startCompany.value, dep: depStation.value,
+                depCompany: depCompany.value, depTime: depTime.value,
+                depPlatform: depPlatform.value, arr: arrStation.value,
+                arrCompany: arrCompany.value, arrTime: arrTime.value,
+                arrPlatform: arrPlatform.value
+            });
+            render();
+        }
+
+        function addExpress() {
+            if (!editMode) return alert("編集モードをONにしてください");
+            itinerary.push({
+                type: "express", name: expressName.value,
+                section: expressSection.value, time: expressTime.value,
+                price: expressPrice.value, ticket: ticketPrice.value,
+                free: expressFree.value, reserved: expressReserved.value
+            });
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById("itineraryList");
+            list.innerHTML = "";
+            itinerary.forEach((i, idx) => {
+                const div = document.createElement("div");
+                div.className = "itinerary-item";
+                const span = document.createElement("span");
+                span.textContent = i.type === "section"
+                    ? ${i.company} ${i.line}(${i.kind}) ${i.dep}→${i.arr}
+                    : 特急 ${i.name} ${i.section};
+                const act = document.createElement("div");
+                act.className = "actions";
+                if (editMode) {
+                    act.innerHTML = 
+            <button onclick="editItem(${idx})">編集</button>
+            <button class="btn-danger" onclick="deleteItem(${idx})">✕</button>
+        ;
+                }
+                div.appendChild(span); div.appendChild(act);
+                list.appendChild(div);
+            });
+        }
+
+        function editItem(idx) {
+            const i = itinerary[idx];
+            if (i.type === "section") {
+                company.value = i.company; line.value = i.line; type.value = i.kind;
+                destination.value = i.destination; destCompany.value = i.destCompany;
+                startStation.value = i.start; startCompany.value = i.startCompany;
+                depStation.value = i.dep; depCompany.value = i.depCompany;
+                depTime.value = i.depTime; depPlatform.value = i.depPlatform;
+                arrStation.value = i.arr; arrCompany.value = i.arrCompany;
+                arrTime.value = i.arrTime; arrPlatform.value = i.arrPlatform;
+            } else {
+                expressName.value = i.name; expressSection.value = i.section;
+                expressTime.value = i.time; expressPrice.value = i.price;
+                ticketPrice.value = i.ticket; expressFree.value = i.free;
+                expressReserved.value = i.reserved;
+            }
+            deleteItem(idx);
+        }
+
+        function deleteItem(idx) {
+            if (!editMode) return;
+            itinerary.splice(idx, 1);
+            render();
+        }
+
+        function generateOutput() {
+            let out = ルート:${routeName.value}(${routeType.value})\n;
+            itinerary.forEach(i => {
+                if (i.type === "section") {
+                    out += [通常] ${i.line} ${i.dep}→${i.arr}\n;
+                } else {
+                    out += [特急] ${i.name} ${i.section}\n;
+                }
+            });
+            output.value = out;
+        }
+
+        function printItinerary() { window.print(); }
+
+        function exportCSV() {
+            let csv = "type,company,line,kind,dest,destCompany,start,startCompany,dep,depCompany,depTime,depPlat,arr,arrCompany,arrTime,arrPlat,expressName,section,time,price,ticket,free,reserved\n";
+            itinerary.forEach(i => {
+                if (i.type === "section") {
+                    csv += section,${i.company},${i.line},${i.kind},${i.destination},${i.destCompany},${i.start},${i.startCompany},${i.dep},${i.depCompany},${i.depTime},${i.depPlatform},${i.arr},${i.arrCompany},${i.arrTime},${i.arrPlatform},,,,,,,\n;
+                } else {
+                    csv += ,,,,,,,,,,,,,,,${i.name},${i.section},${i.time},${i.price},${i.ticket},${i.free},${i.reserved}\n;
+                }
+            });
+            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv" });
+            const a = Object.assign(document.createElement("a"), {
+                href: URL.createObjectURL(blob),
+                download: "itinerary.csv"
+            });
+            document.body.appendChild(a); a.click(); a.remove();
+        }
+
+        function importCSV() {
+            if (!editMode) return alert("編集モードをONにしてください");
+            const f = document.createElement("input"); f.type = "file"; f.accept = ".csv"; f.onchange = () => {
+                const r = new FileReader();
+                r.onload = e => {
+                    const lines = e.target.result.split(/\r?\n/).slice(1);
+                    lines.forEach(l => {
+                        const d = l.split(",");
+                        if (d[0] === "section") {
+                            itinerary.push({
+                                type: "section",
+                                company: d[1], line: d[2], kind: d[3], destination: d[4], destCompany: d[5],
+                                start: d[6], startCompany: d[7], dep: d[8], depCompany: d[9],
+                                depTime: d[10], depPlatform: d[11],
+                                arr: d[12], arrCompany: d[13], arrTime: d[14], arrPlatform: d[15]
+                            });
+                        } else if (d[0] === "express") {
+                            itinerary.push({
+                                type: "express", name: d[16], section: d[17],
+                                time: d[18], price: d[19], ticket: d[20],
+                                free: d[21], reserved: d[22]
+                            });
+                        }
+                    });
+                    render();
+                };
+                r.readAsText(f.files[0]);
+            };
+            f.click();
+        }
+
+        function exportJSON() {
+            const data = JSON.stringify({ meta: { routeName: routeName.value, routeType: routeType.value }, itinerary }, null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const a = Object.assign(document.createElement("a"), {
+                href: URL.createObjectURL(blob),
+                download: "itinerary.json"
+            });
+            document.body.appendChild(a); a.click(); a.remove();
+        }
+
+        function importJSON() {
+            if (!editMode) return alert("編集モードをONにしてください");
+            const f = document.createElement("input"); f.type = "file"; f.accept = ".json"; f.onchange = () => {
+                const r = new FileReader();
+                r.onload = e => {
+                    const obj = JSON.parse(e.target.result);
+                    routeName.value = obj.meta.routeName;
+                    routeType.value = obj.meta.routeType;
+                    itinerary = obj.itinerary || [];
+                    render();
+                };
+                r.readAsText(f.files[0]);
+            };
+            f.click();
+        }
+
+        function saveToLocal() {
+            if (!editMode) return alert("編集モードをONにしてください");
+            const obj = { meta: { routeName: routeName.value, routeType: routeType.value }, itinerary };
+            storageList.push(obj);
+            localStorage.setItem("itineraryList", JSON.stringify(storageList));
+            alert("保存しました");
+            editMode = false;
+            document.getElementById("editToggle").textContent = "編集可";
+            render();
+        }
+
+        function clearStorage() {
+            if (confirm("全保存データを削除しますか？")) {
+                localStorage.removeItem("itineraryList");
+                storageList = [];
+                alert("削除しました");
+            }
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.getElementById("editToggle").textContent = editMode ? "編集中" : "表示専用";
+        }
+
+        window.onload = render;
+
+
+        */
+    </script>
+
+</body>
+
+</html>

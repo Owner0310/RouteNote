@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>RouteNote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Firebase 9 compat版 --><!-- Firebase 9 compat版 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- js 読み込み -->
+    <script src="js/account/account.js" defer></script>
+    <script src="js/account/profile.js" defer></script>
+    <script src="js/account/signup.js" defer></script>
+    <script src="js/account/login.js" defer></script>
+</head>
+<body>
+    <main>
+        <header>
+            <nav class="header-nav">
+                <h1 class="site-title"><a href="/index.html">RouteNote</a></h1>
+                <ul class="nav-links">
+                <li><a href="/index.html">ホーム</a></li>
+                <li><a href="/itinerary/itinerary.html">旅程管理</a></li>
+                <li>
+                    <a href="/account/account.html">アカウント</a>
+                    <span id="accountIconWrapper">
+                    <a href="/account/profile.html" id="accountIconLink">
+                        <img src="/icon/guest.png" alt="アカウントアイコン" id="accountIcon" />
+                    </a>
+                    </span>
+                </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>RouteNoteアカウント</h1>
+        <h2>ログイン</h2>
+
+        <form id="loginForm" class="form-section">
+            <label>メールアドレス</label>
+            <input type="email" id="email" required placeholder="example@info.com" class="must" />
+
+            <label>パスワード</label>
+            <input type="password" id="password" required placeholder="password" class="must" />
+
+            <button type="submit">ログイン</button>
+        </form>
+
+        <p id="errorMsg" style="color:red; margin-top:10px;"></p>
+
+        <footer>
+            <p>&copy; 2025 RouteNote All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+</html>

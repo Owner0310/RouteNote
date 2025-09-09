@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>RouteNote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Firebase 9 compat版 --><!-- Firebase 9 compat版 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- js 読み込み -->
+    <script src="js/account/account.js" defer></script>
+    <script src="js/account/profile.js" defer></script>
+    <script src="js/account/signup.js" defer></script>
+    <script src="js/account/login.js" defer></script>
+</head>
+<body>
+    <main>
+        <header>
+            <nav class="header-nav">
+                <h1 class="site-title"><a href="/index.html">RouteNote</a></h1>
+                <ul class="nav-links">
+                <li><a href="/index.html">ホーム</a></li>
+                <li><a href="/itinerary/itinerary.html">旅程管理</a></li>
+                <li>
+                    <a href="/account/account.html">アカウント</a>
+                    <span id="accountIconWrapper">
+                    <a href="/account/profile.html" id="accountIconLink">
+                        <img src="/icon/guest.png" alt="アカウントアイコン" id="accountIcon" />
+                    </a>
+                    </span>
+                </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>RouteNoteについて</h1>
+        
+            <a href="/about/explain.html"><button>RouteNoteとは？</button></a>
+            <a href="/about/terms.html"><button>利用規約</button></a>
+            <a href="/about/privacy.html"><button>プライバシーポリシー</button></a>
+            <a href="/about/news.html"><button>お知らせ</button></a>
+            <a href="/about/use.html"><button>利用方法</button></a>
+            <a href="/about/version.html"><button>バージョンについて</button></a>
+            <a href="/about/form.html"><button>ご意見・ご要望フォーム</button></a>
+            <a href="/about/qa.html"><button>Q&A</button></a>
+
+        <footer>
+            <p>&copy; 2025 RouteNote All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+</html>

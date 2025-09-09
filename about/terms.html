@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>RouteNote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Firebase 9 compat版 --><!-- Firebase 9 compat版 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- js 読み込み -->
+    <script src="js/account/account.js" defer></script>
+    <script src="js/account/profile.js" defer></script>
+    <script src="js/account/signup.js" defer></script>
+    <script src="js/account/login.js" defer></script>
+</head>
+<body>
+    <main>
+        <header>
+            <nav class="header-nav">
+                <h1 class="site-title"><a href="/index.html">RouteNote</a></h1>
+                <ul class="nav-links">
+                <li><a href="/index.html">ホーム</a></li>
+                <li><a href="/itinerary/itinerary.html">旅程管理</a></li>
+                <li>
+                    <a href="/account/account.html">アカウント</a>
+                    <span id="accountIconWrapper">
+                    <a href="/account/profile.html" id="accountIconLink">
+                        <img src="/icon/guest.png" alt="アカウントアイコン" id="accountIcon" />
+                    </a>
+                    </span>
+                </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>RouteNote 利用規約</h1>
+
+        <h2>RouteNoteとは？</h2>
+        <p>RouteNote（ルートノート）とは、鉄道を利用して旅をする際に、旅程を簡単にまとめられるようにするために開発されているWebアプリケーションです。路線名や時刻を入力して、自分だけの旅程を完成させましょう！</p>
+        <p>RouteNoteには乗り換え検索機能はついていません。ルートは自ら設計し、入力します。自分だけの思い通りの旅程を製作することができます。</p>
+
+        <h2>ご利用に際して</h2>
+        <p>RouteNoteとは、鉄道を利用して旅をする際に、旅程を簡単にまとめられるようにするために開発されているWebアプリケーションです。路線名や時刻を入力して、自分だけの旅程を完成させましょう！</p>
+        <p>RouteNoteには乗り換え検索機能はついていません。ルートは自ら設計し、入力します。自分だけの思い通りの旅程を製作することができます。</p>
+        <p>利用規約につきましては、利用規約についてのページに掲載していますので、そちらをご確認ください。</p>
+        <p>プライバシーポリシーにつきましては、プライバシーポリシーについてのページに掲載していますので、そちらをご確認ください。</p>
+
+        <h2>アカウント機能・データベース機能・データ公開機能について</h2>
+        <p>RouteNoteには、アカウント機能・データベース機能・データ公開機能があります。メールアドレスやパスワードなど情報をアカウント登録することでデータベース機能・データ公開機能を利用でき、作成した旅程をデータベース上に保存することができます。データベース上の旅程は他ユーザーへ共有・公開することもできます。</p>
+        <p>複数人で旅をする際には非常に有用であり、RouteNoteの幅を広げる機能です。また開発する際のデータ収集のために、ぜひご利用ください。</p>
+        <p>なお、アカウント機能を利用しなくてもRouteNoteは利用できます。ただし、データベース機能は利用することはできません。利用しない場合は、出力結果のコピーやローカル上への保存、JSON形式での入出力の形でのみデータを保存しておくことができます。</p>
+        <p>このアプリケーションは開発中のため、登録されているアカウントはアプリケーション開発の際に消去される可能性があります。登録されているアカウント情報やデータベース機能を利用しているデータは必ずしもなくならないわけではないことをご留意ください。</p>
+
+        <h2>推奨動作環境について</h2>
+        <p>RouteNoteは基本的にWindowsPC上で開発されており、推奨動作環境もWindowsPCとなります。また、Full HD（1920x1080）程度の解像度を推奨します。</p>
+        <p>RouteNoteはスマートフォン（iPhone/iPadやAndroidなどを含む）やMac上での動作は可能であると思いますが、表示が崩れたりする場合があります。必ずしも動作を保証するものではないことをご留意ください。</p>
+
+        <h2>アプリケーション開発について</h2>
+        <p>RouteNoteは現在開発途中でありα版での運用となっています。そのため、動作が不安定な個所や正常に動作していない箇所がある可能性があります。</p>
+        <p>今後のアプリケーション開発により、UIや内容の変更、互換性のない変更が行われる可能性があります。十分にご留意の上、ご利用お願いします。</p>
+        <p>また、このアプリケーションは開発者本人が、個人的な趣味や弁用のために開発しているものです。十分にご留意の上、ご利用お願いします。</p>
+        <p>本アプリケーションを使用したことによって発生した損害については、当方は一切の責任を負いません。</p>
+        <p>バージョン情報につきましては、バージョンについてのページに掲載していますので、そちらをご確認ください。</p>
+
+        <h2>ご意見・ご要望について</h2>
+        <p>アプリケーション開発促進やより良いアプリケーションの開発のため、利用者様のご意見・ご要望をお聞かせいただきたいと思っています。</p>
+        <p>「ここは、こうした方がいい！」「こんな機能があればこんな使い方ができるようになる！」など、より具体的なご意見・ご要望がありますとアプリケーション開発に役立てやすくなりますのでお願いいたします。</p>
+        <p>ぜひ、ご意見・ご要望をお聞かせください。</p>
+        <p>※　現在、ご意見・ご要望用のフォームはまだ完成していません。ご意見・ご要望をお寄せになる方々には大変ご迷惑をおかけしております。機能実装まで、今しばらくお待ちください。</p>
+
+        <footer>
+            <p>&copy; 2025 RouteNote All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+</html>
